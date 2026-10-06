@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STATX | Forecasting Intelligence</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <nav class="navbar scrolled" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-brand">
+                <span class="brand-name">STATX</span>
+                <span class="brand-sub">Statistical Intelligence</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Overview</a></li>
+                <li><a href="markets.html">Markets</a></li>
+                <li><a href="retail.html">Retail</a></li>
+                <li><a href="statistics.html">Statistics</a></li>
+                <li><a href="sampling.html">Sampling</a></li>
+                <li><a href="forecasting.html" class="active">Forecasting</a></li>
+                <li><a href="simulator.html">Simulator</a></li>
+            </ul>
+            <div class="nav-controls">
+                <button class="icon-btn" id="themeBtn" aria-label="Toggle Theme">
+                    <i data-lucide="moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section-padding" style="padding: 4rem 0;">
+            <div class="container">
+                <div class="section-header fade-in-up stagger-item">
+                    <h2 class="section-title">Forecasting <span class="text-accent-gradient">Intelligence</span></h2>
+                    <p class="section-subtitle">Live LightGBM forecasts from the store-sales API, with model comparison context.</p>
+                </div>
+
+                <div id="apiStatus" class="fade-in-up stagger-item" style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-secondary);">Connecting to forecast API…</div>
+
+                <div class="glass-panel p-4 fade-in-up stagger-item" style="padding: 2rem; margin-bottom: 2rem;">
+                    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Store</label>
+                            <select id="storeSelector" style="width: 100%;"></select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Product Family</label>
+                            <select id="familySelector" style="width: 100%;"></select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Horizon (days)</label>
+                            <select id="horizonSelector" style="width: 100%;">
+                                <option value="7">7</option>
+                                <option value="15" selected>15</option>
+                                <option value="21">21</option>
+                                <option value="30">30</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Promo items / day</label>
+                            <input id="promoInput" type="number" min="0" max="200" value="0" style="width: 100%; padding: 0.6rem; background: var(--bg-secondary); border: 1px solid var(--border); color: var(--text-primary); border-radius: var(--radius-sm);">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Holiday period</label>
+                            <select id="holidaySelector" style="width: 100%;">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; align-items: flex-end;">
+                            <button id="runForecastBtn" class="btn btn-primary" style="width: 100%;">Run Live Forecast</button>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 2rem; margin-bottom: 2rem; align-items: center; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 220px;">
+                            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Benchmark Models (demo)</label>
+                            <select id="modelSelector" style="width: 100%;">
+                                <option>Moving Average</option>
+                                <option>ARIMA</option>
+                                <option>Random Forest</option>
+                                <option>XGBoost</option>
+                                <option>LSTM</option>
+                                <option selected>CNN-LSTM</option>
+                            </select>
+                        </div>
+                        <div class="grid" style="grid-template-columns: repeat(4, 1fr); gap: 1rem; flex: 3; min-width: 280px;">
+                            <div class="card" style="padding: 1rem;"><div class="card-title">NMSE</div><div class="metric-value" id="valMAE">—</div></div>
+                            <div class="card" style="padding: 1rem;"><div class="card-title">NMAE</div><div class="metric-value" id="valRMSE">—</div></div>
+                            <div class="card" style="padding: 1rem;"><div class="card-title">Avg Daily</div><div class="metric-value" id="valMAPE">—</div></div>
+                            <div class="card" style="padding: 1rem; border-color: var(--accent);"><div class="card-title">Total Forecast</div><div class="metric-value text-accent-gradient" id="valR2">—</div></div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;">Live Prediction (history + forecast)</h3>
+                    <div style="height: 400px; position: relative;">
+                        <canvas id="forecastChart"></canvas>
+                        <div style="position: absolute; top: 10px; right: 20px; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 4px; border: 1px solid var(--border); font-size: 0.8rem;">
+                            <span style="display:inline-block;width:10px;height:10px;background:var(--accent);margin-right:5px;border-radius:50%"></span> Historical
+                            <span style="display:inline-block;width:10px;height:10px;background:var(--accent-secondary);margin-right:5px;margin-left:10px;border-radius:50%"></span> Forecast
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Time Series Decomposition -->
+                <div class="glass-panel p-4 fade-in-up stagger-item" style="padding: 2rem; margin-top: 2rem;">
+                    <h3 style="margin-bottom: 1.5rem; font-size: 1.4rem;">Time Series Decomposition</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">Observed Data = Trend + Seasonality + Residual</p>
+                    
+                    <div class="grid" style="grid-template-columns: 1fr; gap: 1rem;">
+                        <div style="height: 100px;"><canvas id="decompObserved"></canvas></div>
+                        <div style="height: 100px;"><canvas id="decompTrend"></canvas></div>
+                        <div style="height: 100px;"><canvas id="decompSeasonal"></canvas></div>
+                        <div style="height: 100px;"><canvas id="decompResidual"></canvas></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <script src="data/forecasts.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/forecasting.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.fade-in-up').forEach((el, i) => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+                el.style.transition = `opacity 0.8s ease ${i * 0.1}s, transform 0.8s ease ${i * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>

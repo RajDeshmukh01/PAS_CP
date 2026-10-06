@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STATX | Financial Market Intelligence</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <!-- Navbar (same as index) -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-brand">
+                <span class="brand-name">STATX</span>
+                <span class="brand-sub">Statistical Intelligence</span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="index.html">Overview</a></li>
+                <li><a href="markets.html" class="active">Markets</a></li>
+                <li><a href="retail.html">Retail</a></li>
+                <li><a href="statistics.html">Statistics</a></li>
+                <li><a href="sampling.html">Sampling</a></li>
+                <li><a href="forecasting.html">Forecasting</a></li>
+                <li><a href="simulator.html">Simulator</a></li>
+            </ul>
+            
+            <div class="nav-controls">
+                <button class="icon-btn" id="themeBtn" aria-label="Toggle Theme">
+                    <i data-lucide="moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section-padding" style="padding: 4rem 0;">
+            <div class="container">
+                <div class="section-header fade-in-up stagger-item">
+                    <h2 class="section-title">Financial Market <span class="text-accent-gradient">Intelligence</span></h2>
+                    <p class="section-subtitle">Real-time statistical analysis and correlation tracking across major equities.</p>
+                </div>
+                
+                <div class="grid" style="grid-template-columns: 1fr 3fr; gap: 2rem;">
+                    <!-- Controls Sidebar -->
+                    <div class="glass-panel p-4 fade-in-up stagger-item" style="padding: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;">Asset Selection</h3>
+                        <select id="stockSelector" style="width: 100%; margin-bottom: 1.5rem;">
+                            <option value="RELIANCE">Reliance Industries</option>
+                            <option value="TCS">TCS</option>
+                            <option value="INFY">Infosys</option>
+                            <option value="HDFC">HDFC Bank</option>
+                            <option value="ICICI">ICICI Bank</option>
+                        </select>
+                        
+                        <h3 style="margin-bottom: 1rem; font-size: 1.2rem; margin-top: 2rem;">Timeframe</h3>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                            <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">1D</button>
+                            <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">1W</button>
+                            <button class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">1M</button>
+                            <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">6M</button>
+                            <button class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">1Y</button>
+                        </div>
+                        
+                        <h3 style="margin-bottom: 1rem; font-size: 1.2rem; margin-top: 2rem;">Indicators</h3>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            <label><input type="checkbox" checked> Price</label>
+                            <label><input type="checkbox"> Returns</label>
+                            <label><input type="checkbox" checked> Volume</label>
+                            <label><input type="checkbox"> SMA</label>
+                            <label><input type="checkbox"> EMA</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Chart Area -->
+                    <div class="glass-panel p-4 fade-in-up stagger-item" style="padding: 2rem; position: relative;">
+                        <canvas id="marketChart" height="400"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Statistical Cards -->
+                <div class="grid mt-4 fade-in-up stagger-item" style="grid-template-columns: repeat(4, 1fr); margin-top: 2rem;">
+                    <div class="card stat-card"><div class="card-title">Mean</div><div class="metric-value">₹2,450.20</div></div>
+                    <div class="card stat-card"><div class="card-title">Median</div><div class="metric-value">₹2,445.50</div></div>
+                    <div class="card stat-card"><div class="card-title">Variance</div><div class="metric-value">1,420.5</div></div>
+                    <div class="card stat-card"><div class="card-title">Standard Deviation</div><div class="metric-value">₹37.68</div></div>
+                    <div class="card stat-card"><div class="card-title">Minimum</div><div class="metric-value">₹2,380.10</div></div>
+                    <div class="card stat-card"><div class="card-title">Maximum</div><div class="metric-value">₹2,510.40</div></div>
+                    <div class="card stat-card"><div class="card-title">Skewness</div><div class="metric-value">-0.12</div></div>
+                    <div class="card stat-card"><div class="card-title">Kurtosis</div><div class="metric-value">2.84</div></div>
+                </div>
+
+                <div class="grid mt-4 fade-in-up stagger-item" style="grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem;">
+                    <!-- Correlation Matrix -->
+                    <div class="glass-panel" style="padding: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem; font-size: 1.4rem;">Correlation Matrix</h3>
+                        <div id="heatmapContainer" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px;">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div id="heatmapTooltip" style="margin-top: 1rem; min-height: 60px; font-size: 0.9rem; color: var(--text-secondary);">
+                            Hover over a cell to view correlation details.
+                        </div>
+                    </div>
+                    
+                    <!-- Risk vs Return -->
+                    <div class="glass-panel" style="padding: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem; font-size: 1.4rem;">Risk vs Expected Return</h3>
+                        <canvas id="riskReturnChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="data/markets.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/markets.js"></script>
+    <script>
+        // Trigger animations
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.fade-in-up').forEach((el, i) => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+                el.style.transition = `opacity 0.8s ease ${i * 0.1}s, transform 0.8s ease ${i * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>

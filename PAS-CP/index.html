@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STATX | Statistical Intelligence Platform</title>
+    <meta name="description" content="A statistical intelligence platform for analysing financial markets, retail behaviour, seasonality and predictive trends.">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <!-- External Libraries -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="loader-container" id="loader">
+        <div class="spinner"></div>
+        <div class="loading-progress">
+            <div class="loading-text" id="loadingText">Initializing Engine...</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Command Palette (Ctrl+K) -->
+    <div class="cmd-palette" id="cmdPalette">
+        <div class="cmd-container">
+            <input type="text" class="cmd-input" placeholder="Search pages, stocks, metrics, models..." id="cmdInput">
+            <div class="cmd-results" id="cmdResults">
+                <!-- Populated via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-brand">
+                <span class="brand-name">STATX</span>
+                <span class="brand-sub">Statistical Intelligence</span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Overview</a></li>
+                <li><a href="markets.html">Markets</a></li>
+                <li><a href="retail.html">Retail</a></li>
+                <li><a href="statistics.html">Statistics</a></li>
+                <li><a href="sampling.html">Sampling</a></li>
+                <li><a href="forecasting.html">Forecasting</a></li>
+                <li><a href="simulator.html">Simulator</a></li>
+            </ul>
+            
+            <div class="nav-controls">
+                <button class="icon-btn" id="searchBtn" aria-label="Search">
+                    <i data-lucide="search"></i>
+                </button>
+                <button class="icon-btn" id="themeBtn" aria-label="Toggle Theme">
+                    <i data-lucide="moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Canvas Animation -->
+    <section class="hero-section" id="hero">
+        <canvas id="heroCanvas"></canvas>
+        <div class="hero-overlay"></div>
+        
+        <div class="container hero-content">
+            <div class="status-indicator fade-in-up stagger-item">
+                <span class="status-dot"></span>
+                ANALYTICAL ENGINE READY
+            </div>
+            
+            <h1 class="hero-title fade-in-up stagger-item">
+                STATISTICAL <br>INTELLIGENCE <span class="text-accent-gradient">PLATFORM</span>
+            </h1>
+            
+            <p class="hero-subtitle fade-in-up stagger-item">
+                Understand the Data.<br>Predict What Comes Next.<br>
+                A statistical intelligence platform for analysing financial markets, retail behaviour, seasonality and predictive trends.
+            </p>
+            
+            <div class="hero-buttons fade-in-up stagger-item">
+                <a href="#overview" class="btn btn-primary">
+                    <i data-lucide="bar-chart-2"></i> Explore Analytics
+                </a>
+                <a href="simulator.html" class="btn btn-secondary">
+                    <i data-lucide="activity"></i> Run Simulation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <main id="overview">
+        <section class="overview-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Platform Intelligence</h2>
+                    <p class="section-subtitle">Real-time macro analysis and predictive forecasting across multiple economic domains.</p>
+                </div>
+                
+                <div class="grid overview-grid">
+                    <div class="card stat-card">
+                        <div class="card-title">
+                            <i data-lucide="database"></i> Data Points
+                        </div>
+                        <div class="metric-value counter" data-target="1200000">0</div>
+                        <div class="metric-change positive">1.2M+ Synchronized</div>
+                    </div>
+                    
+                    <div class="card stat-card">
+                        <div class="card-title">
+                            <i data-lucide="sigma"></i> Statistical Metrics
+                        </div>
+                        <div class="metric-value counter" data-target="24">0</div>
+                        <div class="metric-change">Live Processing</div>
+                    </div>
+                    
+                    <div class="card stat-card">
+                        <div class="card-title">
+                            <i data-lucide="cpu"></i> Forecasting Models
+                        </div>
+                        <div class="metric-value counter" data-target="8">0</div>
+                        <div class="metric-change">Active Pipelines</div>
+                    </div>
+                    
+                    <div class="card stat-card">
+                        <div class="card-title">
+                            <i data-lucide="check-circle"></i> Confidence Analysis
+                        </div>
+                        <div class="metric-value"><span class="counter" data-target="95">0</span>%</div>
+                        <div class="metric-change positive">Statistical Significance</div>
+                    </div>
+                </div>
+
+                <div class="grid market-grid mt-4">
+                    <div class="card glass-panel">
+                        <div class="card-title">Market Index: NIFTY 50</div>
+                        <div class="metric-value">22,415.60</div>
+                        <div class="metric-change positive">+1.42% <i data-lucide="trending-up"></i></div>
+                    </div>
+                    
+                    <div class="card glass-panel">
+                        <div class="card-title">Retail Demand Trend</div>
+                        <div class="metric-value">High</div>
+                        <div class="metric-change positive">+8.7% YoY <i data-lucide="shopping-bag"></i></div>
+                    </div>
+                    
+                    <div class="card glass-panel">
+                        <div class="card-title">Market Volatility (VIX)</div>
+                        <div class="metric-value">14.2</div>
+                        <div class="metric-change negative">2.31% <i data-lucide="alert-triangle"></i></div>
+                    </div>
+                    
+                    <div class="card glass-panel">
+                        <div class="card-title">Forecast Accuracy</div>
+                        <div class="metric-value">94.2%</div>
+                        <div class="metric-change positive">Baseline Exceeded <i data-lucide="target"></i></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Specific styles for index -->
+    <style>
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            background-color: var(--bg-primary);
+        }
+        
+        #heroCanvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 1;
+            object-fit: cover;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(10,10,12,0.9) 0%, rgba(10,10,12,0.5) 50%, rgba(10,10,12,0.1) 100%);
+            z-index: 2;
+        }
+        
+        [data-theme="light"] .hero-overlay {
+            background: linear-gradient(90deg, rgba(248,249,250,0.9) 0%, rgba(248,249,250,0.6) 50%, rgba(248,249,250,0.2) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 800px;
+            margin-left: 0;
+            padding-top: 5rem;
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--border-highlight);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+        }
+        
+        .hero-title {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+            max-width: 600px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overview-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        
+        .market-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        
+        .mt-4 { margin-top: 2rem; }
+    </style>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+</body>
+</html>

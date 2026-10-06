@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STATX | Statistics Hub</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <nav class="navbar scrolled" id="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-brand">
+                <span class="brand-name">STATX</span>
+                <span class="brand-sub">Statistical Intelligence</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Overview</a></li>
+                <li><a href="markets.html">Markets</a></li>
+                <li><a href="retail.html">Retail</a></li>
+                <li><a href="statistics.html" class="active">Statistics</a></li>
+                <li><a href="sampling.html">Sampling</a></li>
+                <li><a href="forecasting.html">Forecasting</a></li>
+                <li><a href="simulator.html">Simulator</a></li>
+            </ul>
+            <div class="nav-controls">
+                <button class="icon-btn" id="themeBtn" aria-label="Toggle Theme">
+                    <i data-lucide="moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section-padding" style="padding: 4rem 0;">
+            <div class="container">
+                <div class="section-header fade-in-up stagger-item">
+                    <h2 class="section-title">Statistics <span class="text-accent-gradient">Hub</span></h2>
+                    <p class="section-subtitle">Probability distributions and hypothesis testing engine.</p>
+                </div>
+
+                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <!-- Probability Distribution Lab -->
+                    <div class="glass-panel p-4 fade-in-up stagger-item" style="padding: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;">Probability Distribution Lab</h3>
+                        
+                        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                            <div style="flex: 1;">
+                                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Distribution Type</label>
+                                <select id="distType" style="width: 100%;">
+                                    <option value="normal">Normal</option>
+                                    <option value="binomial">Binomial</option>
+                                    <option value="poisson">Poisson</option>
+                                    <option value="exponential">Exponential</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Dynamic Parameters based on distribution -->
+                        <div id="distParams" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                            <div style="flex: 1;">
+                                <label style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: var(--text-secondary);">
+                                    <span>Mean (μ)</span>
+                                    <span id="meanVal" style="color: var(--accent);">0</span>
+                                </label>
+                                <input type="range" id="meanInput" min="-10" max="10" value="0" style="width: 100%;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: var(--text-secondary);">
+                                    <span>Std Dev (σ)</span>
+                                    <span id="stdVal" style="color: var(--accent);">1</span>
+                                </label>
+                                <input type="range" id="stdInput" min="0.1" max="5" step="0.1" value="1" style="width: 100%;">
+                            </div>
+                        </div>
+
+                        <div style="height: 250px;">
+                            <canvas id="probChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Hypothesis Testing Lab -->
+                    <div class="glass-panel p-4 fade-in-up stagger-item" style="padding: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem;">Hypothesis Testing Lab</h3>
+                        
+                        <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Test Type</label>
+                                <select id="testType" style="width: 100%;">
+                                    <option value="t-test">t-test (Independent)</option>
+                                    <option value="z-test">z-test (Proportions)</option>
+                                    <option value="ANOVA">ANOVA</option>
+                                    <option value="Chi-square">Chi-square Test</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Significance (α)</label>
+                                <select id="alphaLvl" style="width: 100%;">
+                                    <option value="0.10">0.10 (90%)</option>
+                                    <option value="0.05" selected>0.05 (95%)</option>
+                                    <option value="0.01">0.01 (99%)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="card" style="background: rgba(0,0,0,0.2); margin-bottom: 1.5rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span style="color: var(--text-secondary);">Null Hypothesis (H₀):</span>
+                                <span>μ₁ - μ₂ = 0</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-secondary);">Alternative (H₁):</span>
+                                <span>μ₁ - μ₂ ≠ 0</span>
+                            </div>
+                        </div>
+
+                        <button id="runTestBtn" class="btn btn-primary" style="width: 100%; margin-bottom: 1.5rem;">
+                            <i data-lucide="play"></i> Execute Test
+                        </button>
+
+                        <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                            <div class="card" style="padding: 1rem;"><div class="card-title">Test Stat</div><div class="metric-value" id="resStat">--</div></div>
+                            <div class="card" style="padding: 1rem;"><div class="card-title">p-value</div><div class="metric-value text-accent-gradient" id="resPVal">--</div></div>
+                            <div class="card" style="padding: 1rem; border-color: var(--accent);"><div class="card-title">Decision</div><div class="metric-value" id="resDecision" style="font-size:1.2rem">--</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="data/statistics.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/statistics.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.fade-in-up').forEach((el, i) => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+                el.style.transition = `opacity 0.8s ease ${i * 0.1}s, transform 0.8s ease ${i * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>
