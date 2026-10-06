@@ -1,0 +1,10 @@
+.git
+**/__pycache__
+**/*.pyc
+**/.venv
+**/venv
+**/.dvc
+store-sales-forecasting/research
+store-sales-forecasting/.github
+**/*.md
+PAS-CP/GSAP Animation Video

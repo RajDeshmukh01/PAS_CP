@@ -1,0 +1,11 @@
+services:
+  statx:
+    build:
+      context: .
+      dockerfile: store-sales-forecasting/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      # Optional: live-edit UI without rebuild
+      - ./PAS-CP:/app/PAS-CP:ro
+    restart: unless-stopped
